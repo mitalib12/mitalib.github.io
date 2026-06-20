@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mitali Bokil, Data & Analytics</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #ffffff;
+      --bg2:       #f5f7f9;
+      --bg3:       #eef0f3;
+      --border:    #e0e3e8;
+      --accent:    #0a7a5a;
+      --accent2:   #0d9e74;
+      --text:      #111315;
+      --muted:     #5a6070;
+      --tag-bg:    #e6f4ef;
+      --tag-text:  #0a7a5a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 2.5rem;
+      background: rgba(255,255,255,0.90);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 2.5rem 4rem;
+      max-width: 1100px; margin: 0 auto;
+      position: relative;
+    }
+    .hero-inner { max-width: 680px; }
+
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px; height: 1px;
+      background: var(--accent);
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 span { color: var(--accent); }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #0e0f11;
+    }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+    /* floating data-viz decoration */
+    .hero-decoration {
+      position: absolute; right: 0; top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.06;
+      pointer-events: none;
+    }
+
+    /* ── SKILL STRIP ── */
+    .skill-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      overflow: hidden;
+      padding: 0.9rem 0;
+    }
+    .skill-strip-inner {
+      display: flex; gap: 2.5rem;
+      animation: ticker 28s linear infinite;
+      width: max-content;
+    }
+    .skill-strip-inner:hover { animation-play-state: paused; }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .skill-item {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .skill-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 2.5rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-size: 0.975rem;
+      max-width: 540px;
+      margin-bottom: 3.5rem;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg2); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      line-height: 1.85;
+    }
+    .about-text p strong { color: var(--text); font-weight: 500; }
+
+    .about-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
+    }
+    .stat-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+    .stat-number {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--bg); }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+      display: flex; flex-direction: column;
+    }
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .project-visual {
+      height: 200px;
+      background: var(--bg3);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* SVG mini chart decorations per project */
+    .visual-churn { background: linear-gradient(135deg, #0e1a16 0%, #152820 100%); }
+    .visual-powerbi { background: linear-gradient(135deg, #12111a 0%, #1c1828 100%); }
+    .visual-fitness { background: linear-gradient(135deg, #111820 0%, #0e1520 100%); }
+
+    .project-body { padding: 1.75rem; flex: 1; display: flex; flex-direction: column; }
+
+    .project-type {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .project-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+    }
+
+    .project-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+
+    .project-highlights {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+    .project-highlights li {
+      font-size: 0.82rem;
+      color: var(--muted);
+      padding: 0.3rem 0;
+      padding-left: 1.1rem;
+      position: relative;
+    }
+    .project-highlights li::before {
+      content: '→';
+      position: absolute; left: 0;
+      color: var(--accent);
+      font-size: 0.75rem;
+    }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .tag {
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .project-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      transition: gap 0.2s;
+      margin-top: auto;
+    }
+    .project-link:hover { gap: 0.7rem; }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--bg2); }
+    .exp-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .exp-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      transition: border-color 0.2s;
+    }
+    .exp-item:hover { border-color: var(--accent); }
+    .exp-role {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+    .exp-company { color: var(--accent); font-size: 0.9rem; margin-bottom: 0.75rem; }
+    .exp-bullets { list-style: none; }
+    .exp-bullets li {
+      font-size: 0.875rem;
+      color: var(--muted);
+      padding: 0.25rem 0;
+      padding-left: 1.1rem;
+      position: relative;
+    }
+    .exp-bullets li::before {
+      content: '·';
+      position: absolute; left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+    .exp-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      white-space: nowrap;
+      text-align: right;
+      padding-top: 0.2rem;
+    }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--bg); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+    .skill-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .skill-card:hover { border-color: var(--accent); }
+    .skill-card-icon {
+      font-size: 1.4rem;
+      margin-bottom: 0.75rem;
+    }
+    .skill-card-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+    .skill-card-items {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ── CERTIFICATIONS ── */
+    #certs { background: var(--bg2); }
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .cert-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem 1.6rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+      transition: border-color 0.2s;
+    }
+    .cert-card:hover { border-color: var(--accent); }
+    .cert-icon {
+      width: 38px; height: 38px;
+      border-radius: 8px;
+      background: var(--tag-bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .cert-name { font-size: 0.88rem; font-weight: 500; color: var(--text); margin-bottom: 0.2rem; }
+    .cert-issuer { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg); }
+    .contact-inner {
+      max-width: 600px;
+      text-align: center;
+      margin: 0 auto;
+    }
+    .contact-inner .section-title { margin-bottom: 1rem; }
+    .contact-inner p { color: var(--muted); margin-bottom: 2.5rem; }
+    .contact-links {
+      display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.25rem; }
+      section { padding: 4rem 1.25rem; }
+      .hero { padding: 7rem 1.25rem 3rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .exp-item { grid-template-columns: 1fr; }
+      .exp-date { text-align: left; }
+      .hero-decoration { display: none; }
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">mb.portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Actively seeking roles · Sydney, Australia</div>
+    <h1>Data that speaks.<br><span>Insights that stick.</span></h1>
+    <p class="hero-desc">
+      Chasing patterns, cracking data mysteries, and turning the findings into something a business can actually use.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View my work →</a>
+      <a href="mailto:mitalibokil2001@gmail.com" class="btn btn-outline">Get in touch</a>
+    </div>
+  </div>
+
+  <!-- Decorative SVG -->
+  <svg class="hero-decoration" width="420" height="340" viewBox="0 0 420 340" fill="none">
+    <rect x="10" y="200" width="40" height="130" fill="#7ee8c2"/>
+    <rect x="70" y="150" width="40" height="180" fill="#7ee8c2"/>
+    <rect x="130" y="100" width="40" height="230" fill="#7ee8c2"/>
+    <rect x="190" y="60" width="40" height="270" fill="#7ee8c2"/>
+    <rect x="250" y="120" width="40" height="210" fill="#7ee8c2"/>
+    <rect x="310" y="80" width="40" height="250" fill="#7ee8c2"/>
+    <rect x="370" y="40" width="40" height="290" fill="#7ee8c2"/>
+    <polyline points="30,200 90,150 150,100 210,60 270,120 330,80 390,40" stroke="#7ee8c2" stroke-width="2" fill="none" opacity="0.5"/>
+  </svg>
+</div>
+
+<!-- SKILL TICKER -->
+<div class="skill-strip">
+  <div class="skill-strip-inner">
+    <!-- doubled for seamless loop -->
+    <span class="skill-item"><span class="skill-dot"></span>Power BI</span>
+    <span class="skill-item"><span class="skill-dot"></span>DAX &amp; Data Modelling</span>
+    <span class="skill-item"><span class="skill-dot"></span>Python</span>
+    <span class="skill-item"><span class="skill-dot"></span>SQL</span>
+    <span class="skill-item"><span class="skill-dot"></span>Pandas &amp; NumPy</span>
+    <span class="skill-item"><span class="skill-dot"></span>Machine Learning</span>
+    <span class="skill-item"><span class="skill-dot"></span>Tableau</span>
+    <span class="skill-item"><span class="skill-dot"></span>BigQuery</span>
+    <span class="skill-item"><span class="skill-dot"></span>Azure</span>
+    <span class="skill-item"><span class="skill-dot"></span>Excel &amp; Power Query</span>
+    <span class="skill-item"><span class="skill-dot"></span>Data Storytelling</span>
+    <span class="skill-item"><span class="skill-dot"></span>KPI Dashboards</span>
+    <span class="skill-item"><span class="skill-dot"></span>Statistical Modelling</span>
+    <span class="skill-item"><span class="skill-dot"></span>Power BI</span>
+    <span class="skill-item"><span class="skill-dot"></span>DAX &amp; Data Modelling</span>
+    <span class="skill-item"><span class="skill-dot"></span>Python</span>
+    <span class="skill-item"><span class="skill-dot"></span>SQL</span>
+    <span class="skill-item"><span class="skill-dot"></span>Pandas &amp; NumPy</span>
+    <span class="skill-item"><span class="skill-dot"></span>Machine Learning</span>
+    <span class="skill-item"><span class="skill-dot"></span>Tableau</span>
+    <span class="skill-item"><span class="skill-dot"></span>BigQuery</span>
+    <span class="skill-item"><span class="skill-dot"></span>Azure</span>
+    <span class="skill-item"><span class="skill-dot"></span>Excel &amp; Power Query</span>
+    <span class="skill-item"><span class="skill-dot"></span>Data Storytelling</span>
+    <span class="skill-item"><span class="skill-dot"></span>Statistical Modelling</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="section-label">About me</div>
+        <h2 class="section-title">Analyst. Storyteller.<br>Problem solver.</h2>
+        <p>
+          I'm <strong>Mitali Bokil</strong>, I turn data into something people can actually use. Not just charts that look good in a deck, but insights that shift how a team thinks and what they do next.
+        </p>
+        <p>
+          My background spans the full analytics stack: structuring and cleaning data with SQL and Python, modelling it into something meaningful, and surfacing it through Power BI dashboards that <strong>non-technical stakeholders understand on first glance</strong>. I've always believed the real work isn't the analysis, it's the communication of it.
+        </p>
+        <p>
+          Most recently at MyPackage, the metrics I designed from smart locker usage data became part of the company's <strong>commercial data product</strong>, not just an internal report, but something with real business value attached to it. That's the kind of impact I'm here to create.
+        </p>
+        <div style="margin-top:2rem;">
+          <a href="mailto:mitalibokil2001@gmail.com" class="btn btn-outline">mitalibokil2001@gmail.com</a>
+        </div>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat-card">
+          <div class="stat-number">80</div>
+          <div class="stat-label">WAM at Macquarie University Masters</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">9.5</div>
+          <div class="stat-label">CGPA across both undergraduate degrees</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">3+</div>
+          <div class="stat-label">Microsoft &amp; Google certifications</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">4+</div>
+          <div class="stat-label">Client datasets cleaned &amp; restructured</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Work</div>
+      <h2 class="section-title">Projects</h2>
+      <p class="section-sub">Real problems, real data, each project tells a story from raw numbers to business insight.</p>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Project 1: Telco Churn -->
+      <div class="project-card reveal">
+        <div class="project-visual visual-churn">
+          <svg width="280" height="160" viewBox="0 0 280 160">
+            <!-- ROC curve style chart -->
+            <line x1="30" y1="130" x2="260" y2="130" stroke="#2a2d32" stroke-width="1.5"/>
+            <line x1="30" y1="130" x2="30" y2="20" stroke="#2a2d32" stroke-width="1.5"/>
+            <!-- diagonal baseline -->
+            <line x1="30" y1="130" x2="260" y2="20" stroke="#2a2d32" stroke-width="1" stroke-dasharray="4,4"/>
+            <!-- ROC curve -->
+            <path d="M30,130 Q60,40 100,30 T200,22 L260,20" stroke="#7ee8c2" stroke-width="2.5" fill="none"/>
+            <!-- fill under curve -->
+            <path d="M30,130 Q60,40 100,30 T200,22 L260,20 L260,130 Z" fill="#7ee8c2" fill-opacity="0.07"/>
+            <!-- AUC label -->
+            <text x="170" y="90" fill="#7ee8c2" font-family="monospace" font-size="11">AUC = 0.87</text>
+            <!-- dots -->
+            <circle cx="100" cy="30" r="3" fill="#7ee8c2"/>
+            <circle cx="200" cy="22" r="3" fill="#7ee8c2"/>
+            <!-- axis labels -->
+            <text x="120" y="148" fill="#8a8f98" font-family="monospace" font-size="9">False Positive Rate</text>
+            <text x="8" y="80" fill="#8a8f98" font-family="monospace" font-size="9" transform="rotate(-90,8,80)">True Positive Rate</text>
+          </svg>
+        </div>
+        <div class="project-body">
+          <div class="project-type">Python · Machine Learning</div>
+          <h3 class="project-title">Telco Customer Churn Analysis</h3>
+          <p class="project-desc">
+            1 in 4 customers was leaving. The business needed to know who was at risk and why, before they cancelled, not after.
+          </p>
+          <ul class="project-highlights">
+            <li>The highest-risk customers weren't random, they were on flexible contracts, paying more, and hadn't been around long. Targeting this segment alone could meaningfully reduce churn</li>
+            <li>Created an ARPU metric from existing data that revealed which customers were actually valuable, not just active</li>
+            <li>XGBoost came out on top with AUC 0.87, but the real focus was making sure the model caught actual churners, not just predicted the majority class</li>
+            <li>Ended with segment-level retention plays, not just a model score, so the output was something a marketing team could actually use</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">XGBoost</span>
+            <span class="tag">Scikit-learn</span>
+            <span class="tag">Seaborn</span>
+          </div>
+          <a href="https://github.com/mitalib12/mitalib.github.io/blob/main/telcochurn.ipynb" target="_blank" class="project-link">View notebook →</a>
+        </div>
+      </div>
+
+      <!-- Project 2: Adventure Works Power BI -->
+      <div class="project-card reveal">
+        <div class="project-visual visual-powerbi">
+          <svg width="280" height="160" viewBox="0 0 280 160">
+            <!-- bar chart grid lines -->
+            <line x1="40" y1="20" x2="40" y2="125" stroke="#2a2d32" stroke-width="1"/>
+            <line x1="40" y1="125" x2="260" y2="125" stroke="#2a2d32" stroke-width="1"/>
+            <line x1="40" y1="85" x2="260" y2="85" stroke="#2a2d32" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <line x1="40" y1="55" x2="260" y2="55" stroke="#2a2d32" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <!-- bars -->
+            <rect x="55" y="60" width="28" height="65" fill="#c084fc" rx="3"/>
+            <rect x="95" y="40" width="28" height="85" fill="#c084fc" rx="3" opacity="0.8"/>
+            <rect x="135" y="70" width="28" height="55" fill="#c084fc" rx="3" opacity="0.6"/>
+            <rect x="175" y="30" width="28" height="95" fill="#c084fc" rx="3" opacity="0.9"/>
+            <rect x="215" y="50" width="28" height="75" fill="#c084fc" rx="3" opacity="0.7"/>
+            <!-- trend line -->
+            <polyline points="69,60 109,40 149,70 189,30 229,50" stroke="#f0abfc" stroke-width="2" fill="none" stroke-dasharray="4,2"/>
+            <!-- labels -->
+            <text x="55" y="140" fill="#8a8f98" font-family="monospace" font-size="8">AU</text>
+            <text x="95" y="140" fill="#8a8f98" font-family="monospace" font-size="8">US</text>
+            <text x="135" y="140" fill="#8a8f98" font-family="monospace" font-size="8">EU</text>
+            <text x="175" y="140" fill="#8a8f98" font-family="monospace" font-size="8">CA</text>
+            <text x="215" y="140" fill="#8a8f98" font-family="monospace" font-size="8">UK</text>
+            <text x="45" y="25" fill="#f0abfc" font-family="monospace" font-size="9">Revenue by Region</text>
+          </svg>
+        </div>
+        <div class="project-body">
+          <div class="project-type">Power BI · Business Intelligence</div>
+          <h3 class="project-title">Adventure Works Sales Dashboard</h3>
+          <p class="project-desc">
+            A sales team drowning in spreadsheets needed one place to see performance clearly, by region, by product, and over time, without needing to ask the analyst every time.
+          </p>
+          <ul class="project-highlights">
+            <li>A handful of products and regions were carrying most of the revenue, something impossible to see in a flat report, obvious in 10 seconds on the dashboard</li>
+            <li>Every KPI updates dynamically, revenue, margin, growth, so stakeholders can slice by region or period without waiting on anyone</li>
+            <li>Drill-throughs let a leader go from company-wide view to a specific product or region in two clicks, the kind of self-service that reduces back-and-forth</li>
+            <li>Every chart answers one question. Nothing is decorative</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Power BI</span>
+            <span class="tag">DAX</span>
+            <span class="tag">Data Modelling</span>
+            <span class="tag">Drill-throughs</span>
+          </div>
+          <a href="#" class="project-link">View dashboard →</a>
+        </div>
+      </div>
+
+      <!-- Project 3: Fitness Tracking (Coming soon) -->
+      <div class="project-card reveal">
+        <div class="project-visual visual-fitness" style="background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);">
+          <svg width="280" height="160" viewBox="0 0 280 160">
+            <line x1="30" y1="130" x2="260" y2="130" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+            <line x1="30" y1="130" x2="30" y2="20" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+            <line x1="30" y1="90" x2="260" y2="90" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <line x1="30" y1="55" x2="260" y2="55" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <polyline points="30,100 65,80 100,95 135,55 170,75 205,45 240,60 260,40"
+              stroke="#90caf9" stroke-width="2.5" fill="none"/>
+            <path d="M30,100 65,80 100,95 135,55 170,75 205,45 240,60 260,40 L260,130 L30,130 Z"
+              fill="#90caf9" fill-opacity="0.15"/>
+            <circle cx="135" cy="55" r="4" fill="#90caf9"/>
+            <circle cx="205" cy="45" r="4" fill="#90caf9"/>
+            <circle cx="260" cy="40" r="4" fill="#90caf9"/>
+            <text x="50" y="18" fill="white" font-family="monospace" font-size="9" font-weight="bold">Apple Fitness Analytics</text>
+            <text x="50" y="32" fill="rgba(255,255,255,0.6)" font-family="monospace" font-size="8">Step Count · Energy · Walking Speed</text>
+          </svg>
+        </div>
+        <div class="project-body">
+          <div class="project-type">Python · Plotly · In Progress</div>
+          <h3 class="project-title">Fitness Watch Data Analysis</h3>
+          <p class="project-desc">
+            Raw step counts don't tell you much. This project goes deeper, finding when performance actually peaks, how efficiently someone moves, and what the data looks like when you visualise it properly.
+          </p>
+          <ul class="project-highlights" style="margin-top:0;">
+            <li>Created a Walking Efficiency metric, distance covered per step, which turned out to be a more honest measure of movement than step count alone</li>
+            <li>Activity patterns varied significantly by time of day, mornings showed the most consistent performance, evenings the most variation</li>
+            <li>Built interactive charts so the data could be explored freely, not just presented as static snapshots</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">Plotly</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">Feature Engineering</span>
+          </div>
+          <a href="#" class="project-link">View notebook →</a>
+        </div>
+      </div>
+
+      <!-- Project 4: Airbnb Brisbane -->
+      <div class="project-card reveal">
+        <div class="project-visual" style="background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);">
+          <svg width="280" height="160" viewBox="0 0 280 160">
+            <line x1="30" y1="130" x2="260" y2="130" stroke="#c5cae9" stroke-width="1.5"/>
+            <line x1="30" y1="130" x2="30" y2="20" stroke="#c5cae9" stroke-width="1.5"/>
+            <line x1="40" y1="100" x2="260" y2="100" stroke="#e8eaf6" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <line x1="40" y1="70" x2="260" y2="70" stroke="#e8eaf6" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <line x1="40" y1="40" x2="260" y2="40" stroke="#e8eaf6" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <!-- bars: LR, RF, XGBoost -->
+            <rect x="60" y="55" width="40" height="75" fill="#9fa8da" rx="4"/>
+            <rect x="120" y="40" width="40" height="90" fill="#5c6bc0" rx="4"/>
+            <rect x="180" y="30" width="40" height="100" fill="#3949ab" rx="4"/>
+            <!-- labels -->
+            <text x="68" y="148" fill="#5c6bc0" font-family="monospace" font-size="8">LR</text>
+            <text x="124" y="148" fill="#5c6bc0" font-family="monospace" font-size="8">RF</text>
+            <text x="181" y="148" fill="#5c6bc0" font-family="monospace" font-size="8">XGB</text>
+            <text x="70" y="18" fill="#3949ab" font-family="monospace" font-size="9">Brisbane Airbnb · Model Comparison</text>
+
+          </svg>
+        </div>
+        <div class="project-body">
+          <div class="project-type">Python · Machine Learning · Group Project</div>
+          <h3 class="project-title">Airbnb Price Prediction, Brisbane</h3>
+          <p class="project-desc">
+            Predicting what a Brisbane Airbnb should cost, across 3,700+ listings with wildly different property types, locations, and host behaviours. Part of a university Kaggle competition, I was responsible for all the modelling.
+          </p>
+          <ul class="project-highlights">
+            <li>XGBoost outperformed Linear Regression and Random Forest, not surprising given how non-linear Airbnb pricing is across neighbourhoods and property types</li>
+            <li>Airbnb prices are heavily skewed, a few luxury listings drag the average up significantly. Transforming the target variable before modelling was the fix that made predictions stable</li>
+            <li>Used cross-validation throughout so model comparisons were honest, not just fit to the training data</li>
+            <li>Landed at <strong>#96 out of 140 teams</strong> on the Kaggle leaderboard, graded on methodology, not rank. Completed in collaboration with Sakshi and Bindu</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">XGBoost</span>
+            <span class="tag">Random Forest</span>
+            <span class="tag">GridSearchCV</span>
+            <span class="tag">Kaggle</span>
+          </div>
+          <a href="https://github.com/mitalib12/mitalib.github.io/blob/main/AIrbnb_price_predictions.ipynb" target="_blank" class="project-link">View notebook →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Career</div>
+      <h2 class="section-title">Experience</h2>
+      <p class="section-sub">Building real products with real data, not just academic exercises.</p>
+    </div>
+    <div class="exp-list">
+      <div class="exp-item reveal">
+        <div>
+          <div class="exp-role">Business Intelligence Analyst</div>
+          <div class="exp-company">MyPackage · India (Remote)</div>
+          <ul class="exp-bullets">
+            <li>Researched and developed key metrics from smart locker usage, now part of the company's data monetisation strategy</li>
+            <li>Set up customer usage logs and automated data collection with Python scripts</li>
+            <li>Built Power BI dashboards visualising real-time locker performance and health metrics</li>
+          </ul>
+        </div>
+        <div class="exp-date">2025 – 2026</div>
+      </div>
+      <div class="exp-item reveal">
+        <div>
+          <div class="exp-role">Data Analyst Intern</div>
+          <div class="exp-company">AI Variant · India</div>
+          <ul class="exp-bullets">
+            <li>Built Power BI dashboards backed by SQL so the team had one reliable place to check business performance, no more chasing numbers across spreadsheets</li>
+            <li>Inherited 4+ messy client datasets and restructured them using SQL and Power Query until the reporting actually made sense</li>
+            <li>Pulled CRM data weekly and turned it into clean client health scorecards, a simple, consistent way for teams to know how their accounts were really doing</li>
+          </ul>
+        </div>
+        <div class="exp-date">2022 – 2023</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Toolkit</div>
+      <h2 class="section-title">Skills</h2>
+      <p class="section-sub">The tools I reach for when the problem matters.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">📊</div>
+        <div class="skill-card-title">Business Intelligence</div>
+        <div class="skill-card-items">Power BI · DAX · Data Modelling<br>Drill-throughs · Bookmarks · Tooltips<br>Tableau · KPI Dashboards</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">🐍</div>
+        <div class="skill-card-title">Python & Analytics</div>
+        <div class="skill-card-items">Pandas · NumPy · Matplotlib<br>Seaborn · Plotly · Scikit-learn<br>XGBoost · Logistic Regression</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">🗄️</div>
+        <div class="skill-card-title">Databases & Cloud</div>
+        <div class="skill-card-items">SQL · Joins · Window Functions<br>BigQuery · Azure · GitHub<br>Power Query · Data Transformation</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon">📈</div>
+        <div class="skill-card-title">Analytics & Reporting</div>
+        <div class="skill-card-items">Excel · Pivot Tables · Forecasting<br>Trend Analysis · Statistical Modelling<br>Dashboard Development</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certs" style="padding-top:0;">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Credentials</div>
+      <h2 class="section-title">Certifications</h2>
+    </div>
+    <div class="cert-grid">
+      <div class="cert-card reveal">
+        <div class="cert-icon">⚡</div>
+        <div>
+          <div class="cert-name">PL-300 Power BI Data Analyst</div>
+          <div class="cert-issuer">Microsoft Certification</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-icon">☁️</div>
+        <div>
+          <div class="cert-name">AZ-900 Azure Fundamentals</div>
+          <div class="cert-issuer">Microsoft Certification</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-icon">🔍</div>
+        <div>
+          <div class="cert-name">Google Data Analytics</div>
+          <div class="cert-issuer">Coursera · Micro Degree</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner reveal">
+      <div class="section-label">Let's connect</div>
+      <h2 class="section-title">Ready for the next chapter</h2>
+      <p>Graduating November 2026 and excited to take my first step into the industry. If you think I could be a good fit for your team, I'd love to hear from you!</p>
+      <div class="contact-links">
+        <a href="mailto:mitalibokil2001@gmail.com" class="btn btn-primary">Email me →</a>
+        <a href="https://www.linkedin.com/in/mitali-bokil-64b97521b/" target="_blank" class="btn btn-outline">LinkedIn</a>
+        <a href="tel:0447231210" class="btn btn-outline">0447 231 210</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Mitali Bokil · Built with HTML/CSS · Sydney, Australia · 2025</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Smooth scroll for nav links (fixes iframe anchor issues)
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Active nav link highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop, 120) current = s.getAttribute('id');
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
+</body>
+</html>
